@@ -2,8 +2,9 @@ import React from 'react';
 import './App.css';
 import {getPostTC, PostsStateType} from "./redux/posts-reducer";
 import {useDispatch, useSelector} from "react-redux";
-import {AppRootStateType, store} from "./redux/store";
+import {AppRootStateType} from "./redux/store";
 import {Post} from "./components/Post";
+import 'antd/dist/antd.css';
 
 function App() {
 
@@ -14,13 +15,15 @@ function App() {
         dispatch(getPostTC())
     }
 
-    console.log(store)
+
+
+   console.log(store)
 
     return (
         <div className="App">
             <button onClick={onClickHandler}>Get posts</button>
             <div>
-               { store.posts.map( p => <Post key={p.userId} title={p.title} body={p.body} />) }
+               { store.posts.map( p => <Post key={p.id} title={p.title} body={p.body} />) }
             </div>
         </div>
     );

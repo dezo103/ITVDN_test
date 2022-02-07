@@ -1,4 +1,5 @@
 import {Dispatch} from 'redux'
+import {postsAPI} from "../api/posts-api";
 
 const initialState: PostsStateType = {
     posts: [
@@ -20,12 +21,7 @@ const initialState: PostsStateType = {
 export const postsReducer = (state: PostsStateType = initialState, action: ActionsType):  PostsStateType => {
     switch (action.type) {
         case 'GET-POSTS':
-            return {...state, posts: [...state.posts, {
-                    "userId": 555,
-                    "id": 233,
-                    "title": " esse",
-                    "body": "ebitis possimus qui neque nisi nulla"
-                }]}
+            return {...state, posts: action.payload}
         default:
             return {...state}
     }
@@ -43,9 +39,10 @@ export type PostType = {
     body: string
 }
 
-export const getPostsAC = () => ({type: 'GET-POSTS'} as const)
+export const getPostsAC = (payload: Array<PostType>) => ({type: 'GET-POSTS', payload} as const)
 export const getPostTC = () => (dispatch: Dispatch) => {
-    dispatch(getPostsAC())
+    postsAPI.getPosts().then((res)=>dispatch(getPostsAC(res.data)))
+   // postsAPI.getPosts().then((res)=>console.log(res.data))
 }
 
 export type GetPostsActionType = ReturnType<typeof getPostsAC>
