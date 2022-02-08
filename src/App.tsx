@@ -1,10 +1,11 @@
 import React from 'react';
 import './App.css';
-import {getPostTC, PostsStateType} from "./redux/posts-reducer";
+import {getPostTC, PostsStateType, delPostTC} from "./redux/posts-reducer";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "./redux/store";
 import {Post} from "./components/Post";
 import 'antd/dist/antd.css';
+import {Button} from "antd";
 
 function App() {
 
@@ -15,15 +16,21 @@ function App() {
         dispatch(getPostTC())
     }
 
+    const deletePost = (id: number) => {
+       // alert(id)
+        dispatch(delPostTC(id))
+    }
 
-
-   console.log(store)
+    console.log(store)
 
     return (
         <div className="App">
-            <button onClick={onClickHandler}>Get posts</button>
-            <div>
-               { store.posts.map( p => <Post key={p.id} title={p.title} body={p.body} />) }
+            <Button type="primary" onClick={onClickHandler}>Get posts</Button>
+            <div style={{
+                display: "flex",
+                flexWrap: "wrap"
+            }}>
+                {store.posts.map(p => <Post key={p.id} title={p.title} body={p.body} id={p.id} deletePost={deletePost}/>)}
             </div>
         </div>
     );
